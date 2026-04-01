@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusScoreMapper">
+    
+    <resultMap type="BusScore" id="BusScoreResult">
+        <result property="scoreId"    column="score_id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="regId"    column="reg_id"    />
+        <result property="scoreValue"    column="score_value"    />
+        <result property="awardLevel"    column="award_level"    />
+        <result property="ranking"    column="ranking"    />
+        <result property="isPublish"    column="is_publish"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBusScoreVo">
+        select score_id, comp_id, reg_id, score_value, award_level, ranking, is_publish, status, del_flag, create_by, create_time, update_by, update_time, remark from bus_score
+    </sql>
+
+    <select id="selectBusScoreList" parameterType="BusScore" resultMap="BusScoreResult">
+        <include refid="selectBusScoreVo"/>
+        <where>  
+            <if test="compId != null "> and comp_id = #{compId}</if>
+            <if test="regId != null "> and reg_id = #{regId}</if>
+            <if test="scoreValue != null "> and score_value = #{scoreValue}</if>
+            <if test="awardLevel != null  and awardLevel != ''"> and award_level = #{awardLevel}</if>
+            <if test="ranking != null "> and ranking = #{ranking}</if>
+            <if test="isPublish != null  and isPublish != ''"> and is_publish = #{isPublish}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusScoreByScoreId" parameterType="Long" resultMap="BusScoreResult">
+        <include refid="selectBusScoreVo"/>
+        where score_id = #{scoreId}
+    </select>
+
+    <insert id="insertBusScore" parameterType="BusScore" useGeneratedKeys="true" keyProperty="scoreId">
+        insert into bus_score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="compId != null">comp_id,</if>
+            <if test="regId != null">reg_id,</if>
+            <if test="scoreValue != null">score_value,</if>
+            <if test="awardLevel != null">award_level,</if>
+            <if test="ranking != null">ranking,</if>
+            <if test="isPublish != null">is_publish,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="compId != null">#{compId},</if>
+            <if test="regId != null">#{regId},</if>
+            <if test="scoreValue != null">#{scoreValue},</if>
+            <if test="awardLevel != null">#{awardLevel},</if>
+            <if test="ranking != null">#{ranking},</if>
+            <if test="isPublish != null">#{isPublish},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusScore" parameterType="BusScore">
+        update bus_score
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="regId != null">reg_id = #{regId},</if>
+            <if test="scoreValue != null">score_value = #{scoreValue},</if>
+            <if test="awardLevel != null">award_level = #{awardLevel},</if>
+            <if test="ranking != null">ranking = #{ranking},</if>
+            <if test="isPublish != null">is_publish = #{isPublish},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where score_id = #{scoreId}
+    </update>
+
+    <delete id="deleteBusScoreByScoreId" parameterType="Long">
+        delete from bus_score where score_id = #{scoreId}
+    </delete>
+
+    <delete id="deleteBusScoreByScoreIds" parameterType="String">
+        delete from bus_score where score_id in 
+        <foreach item="scoreId" collection="array" open="(" separator="," close=")">
+            #{scoreId}
+        </foreach>
+    </delete>
+</mapper>

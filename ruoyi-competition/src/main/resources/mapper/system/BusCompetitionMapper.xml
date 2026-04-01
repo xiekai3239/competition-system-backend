@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusCompetitionMapper">
+    
+    <resultMap type="BusCompetition" id="BusCompetitionResult">
+        <result property="compId"    column="comp_id"    />
+        <result property="compName"    column="comp_name"    />
+        <result property="compLevel"    column="comp_level"    />
+        <result property="compType"    column="comp_type"    />
+        <result property="organizer"    column="organizer"    />
+        <result property="signStartTime"    column="sign_start_time"    />
+        <result property="signEndTime"    column="sign_end_time"    />
+        <result property="compStartTime"    column="comp_start_time"    />
+        <result property="compEndTime"    column="comp_end_time"    />
+        <result property="content"    column="content"    />
+        <result property="attachment"    column="attachment"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBusCompetitionVo">
+        select comp_id, comp_name, comp_level, comp_type, organizer, sign_start_time, sign_end_time, comp_start_time, comp_end_time, content, attachment, status, del_flag, create_by, create_time, update_by, update_time, remark from bus_competition
+    </sql>
+
+    <select id="selectBusCompetitionList" parameterType="BusCompetition" resultMap="BusCompetitionResult">
+        <include refid="selectBusCompetitionVo"/>
+        <where>  
+            <if test="compName != null  and compName != ''"> and comp_name like concat('%', #{compName}, '%')</if>
+            <if test="compLevel != null  and compLevel != ''"> and comp_level = #{compLevel}</if>
+            <if test="compType != null  and compType != ''"> and comp_type = #{compType}</if>
+            <if test="organizer != null  and organizer != ''"> and organizer = #{organizer}</if>
+            <if test="signStartTime != null "> and sign_start_time = #{signStartTime}</if>
+            <if test="signEndTime != null "> and sign_end_time = #{signEndTime}</if>
+            <if test="compStartTime != null "> and comp_start_time = #{compStartTime}</if>
+            <if test="compEndTime != null "> and comp_end_time = #{compEndTime}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="attachment != null  and attachment != ''"> and attachment = #{attachment}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusCompetitionByCompId" parameterType="Long" resultMap="BusCompetitionResult">
+        <include refid="selectBusCompetitionVo"/>
+        where comp_id = #{compId}
+    </select>
+
+    <insert id="insertBusCompetition" parameterType="BusCompetition" useGeneratedKeys="true" keyProperty="compId">
+        insert into bus_competition
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="compName != null and compName != ''">comp_name,</if>
+            <if test="compLevel != null">comp_level,</if>
+            <if test="compType != null">comp_type,</if>
+            <if test="organizer != null">organizer,</if>
+            <if test="signStartTime != null">sign_start_time,</if>
+            <if test="signEndTime != null">sign_end_time,</if>
+            <if test="compStartTime != null">comp_start_time,</if>
+            <if test="compEndTime != null">comp_end_time,</if>
+            <if test="content != null">content,</if>
+            <if test="attachment != null">attachment,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="compName != null and compName != ''">#{compName},</if>
+            <if test="compLevel != null">#{compLevel},</if>
+            <if test="compType != null">#{compType},</if>
+            <if test="organizer != null">#{organizer},</if>
+            <if test="signStartTime != null">#{signStartTime},</if>
+            <if test="signEndTime != null">#{signEndTime},</if>
+            <if test="compStartTime != null">#{compStartTime},</if>
+            <if test="compEndTime != null">#{compEndTime},</if>
+            <if test="content != null">#{content},</if>
+            <if test="attachment != null">#{attachment},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusCompetition" parameterType="BusCompetition">
+        update bus_competition
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compName != null and compName != ''">comp_name = #{compName},</if>
+            <if test="compLevel != null">comp_level = #{compLevel},</if>
+            <if test="compType != null">comp_type = #{compType},</if>
+            <if test="organizer != null">organizer = #{organizer},</if>
+            <if test="signStartTime != null">sign_start_time = #{signStartTime},</if>
+            <if test="signEndTime != null">sign_end_time = #{signEndTime},</if>
+            <if test="compStartTime != null">comp_start_time = #{compStartTime},</if>
+            <if test="compEndTime != null">comp_end_time = #{compEndTime},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="attachment != null">attachment = #{attachment},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where comp_id = #{compId}
+    </update>
+
+    <delete id="deleteBusCompetitionByCompId" parameterType="Long">
+        delete from bus_competition where comp_id = #{compId}
+    </delete>
+
+    <delete id="deleteBusCompetitionByCompIds" parameterType="String">
+        delete from bus_competition where comp_id in 
+        <foreach item="compId" collection="array" open="(" separator="," close=")">
+            #{compId}
+        </foreach>
+    </delete>
+</mapper>

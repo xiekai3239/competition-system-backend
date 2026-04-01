@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusRegistrationMapper">
+    
+    <resultMap type="BusRegistration" id="BusRegistrationResult">
+        <result property="regId"    column="reg_id"    />
+        <result property="compId"    column="comp_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="teamName"    column="team_name"    />
+        <result property="teacherName"    column="teacher_name"    />
+        <result property="memberInfo"    column="member_info"    />
+        <result property="regFile"    column="reg_file"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditMsg"    column="audit_msg"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBusRegistrationVo">
+        select reg_id, comp_id, user_id, team_name, teacher_name, member_info, reg_file, audit_status, audit_msg, status, del_flag, create_by, create_time, update_by, update_time, remark from bus_registration
+    </sql>
+
+    <select id="selectBusRegistrationList" parameterType="BusRegistration" resultMap="BusRegistrationResult">
+        <include refid="selectBusRegistrationVo"/>
+        <where>  
+            <if test="compId != null "> and comp_id = #{compId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="teamName != null  and teamName != ''"> and team_name like concat('%', #{teamName}, '%')</if>
+            <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
+            <if test="memberInfo != null  and memberInfo != ''"> and member_info = #{memberInfo}</if>
+            <if test="regFile != null  and regFile != ''"> and reg_file = #{regFile}</if>
+            <if test="auditStatus != null  and auditStatus != ''"> and audit_status = #{auditStatus}</if>
+            <if test="auditMsg != null  and auditMsg != ''"> and audit_msg = #{auditMsg}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusRegistrationByRegId" parameterType="Long" resultMap="BusRegistrationResult">
+        <include refid="selectBusRegistrationVo"/>
+        where reg_id = #{regId}
+    </select>
+
+    <insert id="insertBusRegistration" parameterType="BusRegistration" useGeneratedKeys="true" keyProperty="regId">
+        insert into bus_registration
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="compId != null">comp_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="teamName != null and teamName != ''">team_name,</if>
+            <if test="teacherName != null">teacher_name,</if>
+            <if test="memberInfo != null">member_info,</if>
+            <if test="regFile != null">reg_file,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditMsg != null">audit_msg,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="compId != null">#{compId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="teamName != null and teamName != ''">#{teamName},</if>
+            <if test="teacherName != null">#{teacherName},</if>
+            <if test="memberInfo != null">#{memberInfo},</if>
+            <if test="regFile != null">#{regFile},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditMsg != null">#{auditMsg},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusRegistration" parameterType="BusRegistration">
+        update bus_registration
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="compId != null">comp_id = #{compId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="teamName != null and teamName != ''">team_name = #{teamName},</if>
+            <if test="teacherName != null">teacher_name = #{teacherName},</if>
+            <if test="memberInfo != null">member_info = #{memberInfo},</if>
+            <if test="regFile != null">reg_file = #{regFile},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditMsg != null">audit_msg = #{auditMsg},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where reg_id = #{regId}
+    </update>
+
+    <delete id="deleteBusRegistrationByRegId" parameterType="Long">
+        delete from bus_registration where reg_id = #{regId}
+    </delete>
+
+    <delete id="deleteBusRegistrationByRegIds" parameterType="String">
+        delete from bus_registration where reg_id in 
+        <foreach item="regId" collection="array" open="(" separator="," close=")">
+            #{regId}
+        </foreach>
+    </delete>
+</mapper>
