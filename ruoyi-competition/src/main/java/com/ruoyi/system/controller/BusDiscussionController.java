@@ -1,5 +1,6 @@
 package com.ruoyi.system.controller;
 
+import com.ruoyi.common.utils.SecurityUtils;
 import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -66,7 +67,13 @@ public class BusDiscussionController extends BaseController
     @GetMapping(value = "/{postId}")
     public AjaxResult getInfo(@PathVariable("postId") Long postId)
     {
-        return success(busDiscussionService.selectBusDiscussionByPostId(postId));
+        BusDiscussion discussion = busDiscussionService.selectBusDiscussionByPostId(postId);
+        // 每次查看详情，浏览量 +1
+        if(discussion != null) {
+            discussion.setViewCount(discussion.getViewCount() + 1);
+            busDiscussionService.updateBusDiscussion(discussion);
+        }
+        return success(discussion);
     }
 
     /**
@@ -77,9 +84,12 @@ public class BusDiscussionController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody BusDiscussion busDiscussion)
     {
+        // 核心修复：发帖时自动绑定当前登录用户的ID
+        busDiscussion.setUserId(SecurityUtils.getUserId());
+        busDiscussion.setCreateBy(SecurityUtils.getUsername());
+
         return toAjax(busDiscussionService.insertBusDiscussion(busDiscussion));
     }
-
     /**
      * 修改在线讨论主题
      */

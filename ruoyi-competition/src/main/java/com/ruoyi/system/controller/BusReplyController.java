@@ -1,5 +1,6 @@
 package com.ruoyi.system.controller;
 
+import com.ruoyi.common.utils.SecurityUtils;
 import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -77,6 +78,10 @@ public class BusReplyController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody BusReply busReply)
     {
+        // 核心修复：从当前系统的安全上下文中获取登录用户的ID和账号名，并赋给实体类
+        busReply.setUserId(SecurityUtils.getUserId());
+        busReply.setCreateBy(SecurityUtils.getUsername());
+
         return toAjax(busReplyService.insertBusReply(busReply));
     }
 
