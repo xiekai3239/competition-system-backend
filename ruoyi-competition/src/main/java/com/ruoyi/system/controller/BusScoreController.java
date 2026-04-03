@@ -101,4 +101,14 @@ public class BusScoreController extends BaseController
     {
         return toAjax(busScoreService.deleteBusScoreByScoreIds(scoreIds));
     }
+
+    /**
+     * 下载成绩导入模板
+     */
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) {
+        // 使用 ExcelUtil 工具类生成并响应空模板
+        ExcelUtil<BusScore> util = new ExcelUtil<>(BusScore.class);
+        util.importTemplateExcel(response, "成绩导入模板");
+    }
 }
