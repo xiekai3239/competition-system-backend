@@ -1,5 +1,6 @@
 package com.ruoyi.system.controller;
 
+import com.ruoyi.common.utils.SecurityUtils;
 import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,10 +38,14 @@ public class BusRegistrationController extends BaseController
     /**
      * 查询报名参赛列表
      */
-    @PreAuthorize("@ss.hasPermi('system:registration:list')")
+    @PreAuthorize("@ss.hasPermi('system:registration:list')") // 注意这里的权限标识根据你的实际菜单修改
     @GetMapping("/list")
     public TableDataInfo list(BusRegistration busRegistration)
     {
+        // 【核心改造】：数据隔离。如果当前登录人不是超级管理员，则强制要求只能查询自己的报名记录
+        if (!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
+            busRegistration.setUserId(SecurityUtils.getUserId());
+        }
         startPage();
         List<BusRegistration> list = busRegistrationService.selectBusRegistrationList(busRegistration);
         return getDataTable(list);
@@ -77,6 +82,8 @@ public class BusRegistrationController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody BusRegistration busRegistration)
     {
+        busRegistration.setUserId(SecurityUtils.getUserId());
+        busRegistration.setCreateBy(SecurityUtils.getUsername());
         return toAjax(busRegistrationService.insertBusRegistration(busRegistration));
     }
 
