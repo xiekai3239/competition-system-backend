@@ -50,6 +50,12 @@ public class BusScore extends BaseEntity
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
+    /** 竞赛名称 */
+    private String compName;
+
+    /** 队伍名称 */
+    private String teamName;
+
     public void setScoreId(Long scoreId) 
     {
         this.scoreId = scoreId;
@@ -140,6 +146,22 @@ public class BusScore extends BaseEntity
         return delFlag;
     }
 
+    public String getCompName() {
+        return compName;
+    }
+
+    public void setCompName(String compName) {
+        this.compName = compName;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -157,6 +179,8 @@ public class BusScore extends BaseEntity
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
+            .append("compName", getCompName())
+            .append("teamName", getTeamName())
             .toString();
     }
 }
