@@ -17,6 +17,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.system.domain.BusScore;
+import com.ruoyi.system.domain.BusScoreStatistics;
 import com.ruoyi.system.service.IBusScoreService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -29,8 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/score")
-public class BusScoreController extends BaseController
-{
+public class BusScoreController extends BaseController {
     @Autowired
     private IBusScoreService busScoreService;
 
@@ -39,8 +39,7 @@ public class BusScoreController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:score:list')")
     @GetMapping("/list")
-    public TableDataInfo list(BusScore busScore)
-    {
+    public TableDataInfo list(BusScore busScore) {
         startPage();
         List<BusScore> list = busScoreService.selectBusScoreList(busScore);
         return getDataTable(list);
@@ -52,8 +51,7 @@ public class BusScoreController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:score:export')")
     @Log(title = "成绩发布", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, BusScore busScore)
-    {
+    public void export(HttpServletResponse response, BusScore busScore) {
         List<BusScore> list = busScoreService.selectBusScoreList(busScore);
         ExcelUtil<BusScore> util = new ExcelUtil<BusScore>(BusScore.class);
         util.exportExcel(response, list, "成绩发布数据");
@@ -64,8 +62,7 @@ public class BusScoreController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:score:query')")
     @GetMapping(value = "/{scoreId}")
-    public AjaxResult getInfo(@PathVariable("scoreId") Long scoreId)
-    {
+    public AjaxResult getInfo(@PathVariable("scoreId") Long scoreId) {
         return success(busScoreService.selectBusScoreByScoreId(scoreId));
     }
 
@@ -75,8 +72,7 @@ public class BusScoreController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:score:add')")
     @Log(title = "成绩发布", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody BusScore busScore)
-    {
+    public AjaxResult add(@RequestBody BusScore busScore) {
         return toAjax(busScoreService.insertBusScore(busScore));
     }
 
@@ -86,8 +82,7 @@ public class BusScoreController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:score:edit')")
     @Log(title = "成绩发布", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody BusScore busScore)
-    {
+    public AjaxResult edit(@RequestBody BusScore busScore) {
         return toAjax(busScoreService.updateBusScore(busScore));
     }
 
@@ -96,9 +91,8 @@ public class BusScoreController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:score:remove')")
     @Log(title = "成绩发布", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{scoreIds}")
-    public AjaxResult remove(@PathVariable Long[] scoreIds)
-    {
+    @DeleteMapping("/{scoreIds}")
+    public AjaxResult remove(@PathVariable Long[] scoreIds) {
         return toAjax(busScoreService.deleteBusScoreByScoreIds(scoreIds));
     }
 
@@ -110,5 +104,15 @@ public class BusScoreController extends BaseController
         // 使用 ExcelUtil 工具类生成并响应空模板
         ExcelUtil<BusScore> util = new ExcelUtil<>(BusScore.class);
         util.importTemplateExcel(response, "成绩导入模板");
+    }
+
+    /**
+     * 按竞赛分组统计成绩（平均分、最高分）
+     */
+    @PreAuthorize("@ss.hasPermi('system:score:list')")
+    @GetMapping("/statistics")
+    public AjaxResult getStatistics(BusScore busScore) {
+        List<BusScoreStatistics> list = busScoreService.selectScoreStatisticsByComp(busScore);
+        return success(list);
     }
 }

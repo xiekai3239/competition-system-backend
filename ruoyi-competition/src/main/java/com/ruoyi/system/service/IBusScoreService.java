@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.BusScore;
+import com.ruoyi.system.domain.BusScoreStatistics;
 
 /**
  * 成绩发布Service接口
@@ -9,8 +10,7 @@ import com.ruoyi.system.domain.BusScore;
  * @author ruoyi
  * @date 2026-03-31
  */
-public interface IBusScoreService 
-{
+public interface IBusScoreService {
     /**
      * 查询成绩发布
      * 
@@ -58,4 +58,12 @@ public interface IBusScoreService
      * @return 结果
      */
     public int deleteBusScoreByScoreId(Long scoreId);
+
+    /**
+     * 按竞赛分组统计成绩（平均分、最高分）
+     * 
+     * @param busScore 成绩发布
+     * @return 成绩统计集合
+     */
+    public List<BusScoreStatistics> selectScoreStatisticsByComp(BusScore busScore);
 }

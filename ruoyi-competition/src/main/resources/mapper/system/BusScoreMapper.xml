@@ -121,4 +121,18 @@
             #{scoreId}
         </foreach>
     </delete>
+
+    <!-- 按竞赛分组统计成绩（平均分、最高分） -->
+    <select id="selectScoreStatisticsByComp" parameterType="BusScore" resultType="BusScoreStatistics">
+        SELECT 
+            c.comp_id AS compId,
+            c.comp_name AS compName,
+            ROUND(AVG(s.score_value), 2) AS avgScore,
+            MAX(s.score_value) AS maxScore
+        FROM bus_score s
+        LEFT JOIN bus_competition c ON s.comp_id = c.comp_id
+        WHERE s.del_flag = '0' AND s.status = '0'
+        <if test="isPublish != null and isPublish != ''"> AND s.is_publish = #{isPublish}</if>
+        GROUP BY c.comp_id, c.comp_name
+    </select>
 </mapper>

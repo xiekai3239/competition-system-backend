@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.BusScoreMapper;
 import com.ruoyi.system.domain.BusScore;
+import com.ruoyi.system.domain.BusScoreStatistics;
 import com.ruoyi.system.service.IBusScoreService;
 
 /**
@@ -15,8 +16,7 @@ import com.ruoyi.system.service.IBusScoreService;
  * @date 2026-03-31
  */
 @Service
-public class BusScoreServiceImpl implements IBusScoreService 
-{
+public class BusScoreServiceImpl implements IBusScoreService {
     @Autowired
     private BusScoreMapper busScoreMapper;
 
@@ -27,8 +27,7 @@ public class BusScoreServiceImpl implements IBusScoreService
      * @return 成绩发布
      */
     @Override
-    public BusScore selectBusScoreByScoreId(Long scoreId)
-    {
+    public BusScore selectBusScoreByScoreId(Long scoreId) {
         return busScoreMapper.selectBusScoreByScoreId(scoreId);
     }
 
@@ -39,8 +38,7 @@ public class BusScoreServiceImpl implements IBusScoreService
      * @return 成绩发布
      */
     @Override
-    public List<BusScore> selectBusScoreList(BusScore busScore)
-    {
+    public List<BusScore> selectBusScoreList(BusScore busScore) {
         return busScoreMapper.selectBusScoreList(busScore);
     }
 
@@ -51,8 +49,7 @@ public class BusScoreServiceImpl implements IBusScoreService
      * @return 结果
      */
     @Override
-    public int insertBusScore(BusScore busScore)
-    {
+    public int insertBusScore(BusScore busScore) {
         busScore.setCreateTime(DateUtils.getNowDate());
         return busScoreMapper.insertBusScore(busScore);
     }
@@ -64,8 +61,7 @@ public class BusScoreServiceImpl implements IBusScoreService
      * @return 结果
      */
     @Override
-    public int updateBusScore(BusScore busScore)
-    {
+    public int updateBusScore(BusScore busScore) {
         busScore.setUpdateTime(DateUtils.getNowDate());
         return busScoreMapper.updateBusScore(busScore);
     }
@@ -77,8 +73,7 @@ public class BusScoreServiceImpl implements IBusScoreService
      * @return 结果
      */
     @Override
-    public int deleteBusScoreByScoreIds(Long[] scoreIds)
-    {
+    public int deleteBusScoreByScoreIds(Long[] scoreIds) {
         return busScoreMapper.deleteBusScoreByScoreIds(scoreIds);
     }
 
@@ -89,8 +84,18 @@ public class BusScoreServiceImpl implements IBusScoreService
      * @return 结果
      */
     @Override
-    public int deleteBusScoreByScoreId(Long scoreId)
-    {
+    public int deleteBusScoreByScoreId(Long scoreId) {
         return busScoreMapper.deleteBusScoreByScoreId(scoreId);
+    }
+
+    /**
+     * 按竞赛分组统计成绩（平均分、最高分）
+     * 
+     * @param busScore 成绩发布
+     * @return 成绩统计集合
+     */
+    @Override
+    public List<BusScoreStatistics> selectScoreStatisticsByComp(BusScore busScore) {
+        return busScoreMapper.selectScoreStatisticsByComp(busScore);
     }
 }
