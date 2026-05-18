@@ -66,4 +66,13 @@ public interface IBusScoreService {
      * @return 成绩统计集合
      */
     public List<BusScoreStatistics> selectScoreStatisticsByComp(BusScore busScore);
+
+    /**
+     * 导入成绩数据
+     * 
+     * @param scoreList 成绩列表
+     * @param updateSupport 是否更新已存在的数据
+     * @return 导入结果信息
+     */
+    public String importScoreData(List<BusScore> scoreList, boolean updateSupport);
 }

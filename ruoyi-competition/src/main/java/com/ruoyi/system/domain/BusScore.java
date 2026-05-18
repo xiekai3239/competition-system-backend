@@ -20,43 +20,53 @@ public class BusScore extends BaseEntity
     private Long scoreId;
 
     /** 竞赛ID */
-    @Excel(name = "竞赛ID")
     private Long compId;
 
     /** 报名ID（关联队伍） */
-    @Excel(name = "报名ID", readConverterExp = "关=联队伍")
     private Long regId;
 
+    /** 竞赛名称 */
+    @Excel(name = "竞赛名称", sort = 1)
+    private String compName;
+
+    /** 队伍名称 */
+    @Excel(name = "报名队伍名称", sort = 2)
+    private String teamName;
+
     /** 具体分数（支持两位小数） */
-    @Excel(name = "具体分数", readConverterExp = "支=持两位小数")
+    @Excel(name = "具体分数", sort = 3)
     private BigDecimal scoreValue;
 
     /** 获奖等第（关联字典：特等奖、一等奖等） */
-    @Excel(name = "获奖等第", readConverterExp = "关=联字典：特等奖、一等奖等")
+    @Excel(name = "获奖等第", sort = 4)
     private String awardLevel;
 
     /** 排名 */
-    @Excel(name = "排名")
+    @Excel(name = "排名", sort = 5)
     private Long ranking;
 
     /** 是否发布（0未发布 1已发布） */
-    @Excel(name = "是否发布", readConverterExp = "0=未发布,1=已发布")
+    @Excel(name = "是否发布", readConverterExp = "0=未发布,1=已发布", sort = 6)
     private String isPublish;
 
     /** 状态（0正常 1停用） */
-    @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
+    @Excel(name = "状态", readConverterExp = "0=正常,1=停用", sort = 7)
     private String status;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    /** 竞赛名称 */
-    private String compName;
+    /** 竞赛级别 */
+    private String compLevel;
 
-    /** 队伍名称 */
-    private String teamName;
+    /** 竞赛类别 */
+    private String compType;
 
-    public void setScoreId(Long scoreId) 
+    /** 评语/备注 */
+    @Excel(name = "评语/备注", sort = 8)
+    private String remark;
+
+    public void setScoreId(Long scoreId)
     {
         this.scoreId = scoreId;
     }
@@ -162,6 +172,22 @@ public class BusScore extends BaseEntity
         this.teamName = teamName;
     }
 
+    public String getCompLevel() {
+        return compLevel;
+    }
+
+    public void setCompLevel(String compLevel) {
+        this.compLevel = compLevel;
+    }
+
+    public String getCompType() {
+        return compType;
+    }
+
+    public void setCompType(String compType) {
+        this.compType = compType;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -181,6 +207,8 @@ public class BusScore extends BaseEntity
             .append("remark", getRemark())
             .append("compName", getCompName())
             .append("teamName", getTeamName())
+            .append("compLevel", getCompLevel())
+            .append("compType", getCompType())
             .toString();
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Log;
@@ -19,8 +20,14 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.system.domain.BusScore;
 import com.ruoyi.system.domain.BusScoreStatistics;
 import com.ruoyi.system.service.IBusScoreService;
-import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 成绩发布Controller
@@ -104,6 +111,26 @@ public class BusScoreController extends BaseController {
         // 使用 ExcelUtil 工具类生成并响应空模板
         ExcelUtil<BusScore> util = new ExcelUtil<>(BusScore.class);
         util.importTemplateExcel(response, "成绩导入模板");
+    }
+
+    /**
+     * 导入成绩数据
+     */
+    @PreAuthorize("@ss.hasPermi('system:score:import')")
+    @Log(title = "成绩发布", businessType = BusinessType.IMPORT)
+    @PostMapping("/importData")
+    public AjaxResult importData(@RequestParam("file") MultipartFile file, boolean updateSupport) throws Exception {
+        if (file.isEmpty()) {
+            return error("上传文件不能为空");
+        }
+        try {
+            ExcelUtil<BusScore> util = new ExcelUtil<>(BusScore.class);
+            List<BusScore> scoreList = util.importExcel(file.getInputStream());
+            String message = busScoreService.importScoreData(scoreList, updateSupport);
+            return success(message);
+        } catch (Exception e) {
+            return error("导入失败：" + e.getMessage());
+        }
     }
 
     /**

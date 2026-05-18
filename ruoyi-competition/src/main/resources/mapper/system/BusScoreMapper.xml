@@ -22,6 +22,8 @@
 
         <result property="compName"   column="comp_name"   />
         <result property="teamName"   column="team_name"   />
+        <result property="compLevel"  column="comp_level"  />
+        <result property="compType"   column="comp_type"   />
     </resultMap>
 
     <sql id="selectBusScoreVo">
@@ -29,7 +31,7 @@
             s.score_id, s.comp_id, s.reg_id, s.score_value, s.award_level, s.ranking,
             s.is_publish, s.status, s.del_flag, s.create_by, s.create_time, s.update_by,
             s.update_time, s.remark,
-            c.comp_name,
+            c.comp_name, c.comp_level, c.comp_type,
             r.team_name
         from bus_score s
                  left join bus_competition c on s.comp_id = c.comp_id
